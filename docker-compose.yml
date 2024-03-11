@@ -1,0 +1,38 @@
+version: "3.6"
+
+services:
+
+  pgadmin:
+    container_name: pgadmin
+    hostname: pgadmin
+    image: dpage/pgadmin4:7.6
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=5050
+    ports:
+      - "5050:80"
+    network_mode: "host"
+
+  db-postgresql:
+    image: postgres:16.1
+    environment:
+      - POSTGRES_DB=rinhadb
+      - POSTGRES_USER=rinha
+      - POSTGRES_PASSWORD=rinha123
+    network_mode: host
+    hostname: db-postgresql
+    # volumes:
+    #   - ./import.sql:/docker-entrypoint-initdb.d/script.sql
+    command: postgres -c 'max_connections=300' -c 'fsync=off' -c 'synchronous_commit=off' -c 'checkpoint_timeout=1d' -c 'full_page_writes=false'
+    deploy:
+      resources:
+        limits:
+          cpus: "0.9"
+          memory: "300MB"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
