@@ -129,3 +129,9 @@ Then, issue requests:
 http ":8080/fraud/amount?customerId=1"
 http ":8080/fraud/distance?customerId=1"
 ```
+
+
+### Example:
+![image](https://github.com/zsantana/quarkus-llm-antifraude/assets/17239827/c40f28c3-28b4-4ef9-be0e-001801f2f291)
+
+
